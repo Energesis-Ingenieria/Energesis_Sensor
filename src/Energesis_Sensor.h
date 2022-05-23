@@ -18,7 +18,7 @@
 
 #define ENERGESIS_MAJOR_VERSION 0
 #define ENERGESIS_MINOR_VERSION 1
-#define ENERGESIS_PATCH_VERSION 3
+#define ENERGESIS_PATCH_VERSION 4
 
 namespace Energesis{
 
@@ -113,9 +113,9 @@ public:
   virtual void getSensorDetails( sensor_details_t *details ) = 0;
 
   /**
-   * @brief Envía información relativa al sensor a un Stream.
+   * @brief Envía información del sensor a un Stream.
    * 
-   * @param output 
+   * @param output Stream al que se envía la información (Ej: Serial).
    */
   void printSensorDetails( Stream *output = &Serial );
 
@@ -130,8 +130,6 @@ private:
    */
   static const char* sensorTypeToString( sensor_type_t type );
 
-
-
 };
 
 
@@ -144,6 +142,12 @@ class Energesis_AnalogSensor{
     Energesis_AnalogSensor():m_v_ref(5000), m_resolution(12){};
     virtual ~Energesis_AnalogSensor(){};
 
+    /**
+     * @brief Establece el voltaje de referencia a utilizar para la conversión.
+     * 
+     * @param v_ref voltaje de referencia en mV.
+     * @return float voltaje de referencia establecido.
+     */
     float setVref( float v_ref ){
       if( v_ref < 0.0 ){ // auto select
         #if defined(ESP32)
@@ -160,6 +164,11 @@ class Energesis_AnalogSensor{
       return m_v_ref;
     }
 
+    /**
+     * @brief Retorna el voltaje de referencia utilizado en la conversión
+     * 
+     * @return float 
+     */
     float getVref(){ return m_v_ref; };
 
     /**
@@ -173,6 +182,11 @@ class Energesis_AnalogSensor{
      */
     void setAnalogResolution( uint8_t bits ){ m_resolution = bits; }
 
+    /**
+     * @brief Retorna la resolución (en bits) utilizada para realizar las conversiones.
+     * 
+     * @return uint8_t resolución en bits.
+     */
     uint8_t getAnalogResolution(){ return m_resolution; }
 
     /**
@@ -183,7 +197,7 @@ class Energesis_AnalogSensor{
     virtual uint16_t getRaw() = 0;
 
   private:
-    float m_v_ref;        //!< voltaje de referencia [mV]
+    float m_v_ref;          //!< voltaje de referencia [mV]
     uint8_t m_resolution;   //!< resolución [bits]
 };
 
@@ -224,13 +238,29 @@ class Energesis_TemperatureSensor{
       return getTemperature() + 273.15;
     }
 
+    /**
+     * @brief Retorna una instancia genérica del sensor de temperatura
+     * 
+     * @return Energesis_Sensor* instancia genérica del sensor de temperatura 
+     */
     virtual Energesis_Sensor *getTemperatureSensor() = 0;
 
-
+    /**
+     * @brief Convierte un valor de temperatura de grados Celsius a Fahrenheit.
+     * 
+     * @param c temperatura en grados Celsius.
+     * @return float temperatura en grados Fahrenheit.
+     */
     static float CelsiusToFahrenheit( float c ){
       return (c*9/5) + 32.0; 
     }
 
+    /**
+     * @brief Convierte un valor de temperatura de grados Celsius a Kelvin.
+     * 
+     * @param c temperatura en grados Celsius.
+     * @return float temperatura en grados Kelvin.
+     */
     static float CelsiusToKelvin( float c ){
       return c + 273.15;
     }
@@ -253,8 +283,17 @@ class Energesis_RelativeHumiditySensor{
         delete m_humidity_sensor;
     };
 
+    /**
+     * @brief Retorna la humedad relativa en %.
+     *
+     */
     virtual float getRelativeHumidity() = 0;
 
+    /**
+     * @brief Retorna una instancia genérica del sensor de humedad relativa.
+     * 
+     * @return Energesis_Sensor* instancia genérica del sensor de humedad relativa. 
+     */
     virtual Energesis_Sensor* getRelativeHumiditySensor() = 0;
 
   protected:
