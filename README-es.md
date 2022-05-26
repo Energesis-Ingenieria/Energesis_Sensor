@@ -1,6 +1,8 @@
 # Energesis Generic Sensor Driver
 
-_[Ver en español](README-es.md)_
+![Hex.pm](https://img.shields.io/hexpm/l/plug)  [![PlatformIO Registry](https://badges.registry.platformio.org/packages/energesis-ingenieria/library/Energesis_Sensor.svg)](https://registry.platformio.org/libraries/energesis-ingenieria/Energesis_Sensor) [![GitHub Release](https://img.shields.io/github/release/energesis-ingenieria/Energesis_Sensor.svg?style=flat)]() 
+![GitHub all releases](https://img.shields.io/github/downloads/energesis-ingenieria/Energesis_Sensor/total) ![GitHub watchers](https://img.shields.io/github/watchers/Energesis-Ingenieria/Energesis_Sensor)
+
 _[See in english](README.md)_
 
 Uno de los muchos desafíos del diseño de sistemas electrónicos es el hecho de que los componentes que hoy se utilizan pueden estar obsoletos y descontinuados mañana, o los requisitos del sistema pueden cambiar y es posible que se deba elegir un sensor diferente.
@@ -15,5 +17,4 @@ _**Nota:** Esta biblioteca está basada en [Adafruit Unified Sensor Driver](http
 
 
 ## License
-![Hex.pm](https://img.shields.io/hexpm/l/plug)
 Licencia Apache 2.0 license, ver [LICENSE](LICENSE) para más detalles.
