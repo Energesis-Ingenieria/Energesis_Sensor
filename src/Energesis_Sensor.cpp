@@ -15,7 +15,7 @@
 #define ENERGESIS_LANGUAGE_EN (1<<1)
 
 #ifndef ENERGESIS_LANGUAGE_SET
-#define ENERGESIS_LANGUAGE_SET ENERGESIS_LANGUAGE_ES 
+#define ENERGESIS_LANGUAGE_SET ENERGESIS_LANGUAGE_EN 
 #endif
 
 
@@ -61,7 +61,7 @@ void Energesis_Sensor::printSensorDetails( Stream *output ){
   output->println( sensor.version );
 
   output->print( language_auto_select( "ID único: ", "Unique ID: " ) );
-  output->println( sensor.sensor_id, HEX );
+  output->println( (unsigned long)(sensor.sensor_id), HEX );
 
   output->print( language_auto_select( "Valor Min.: ", "Min value: " ) );
   output->println( sensor.min_value );

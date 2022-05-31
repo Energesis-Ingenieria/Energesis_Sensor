@@ -1,5 +1,5 @@
 {
-  "name": "Energesis_Sensor",
+  "name": "Energesis_GenericSensor",
   "keywords": "generic, sensor",
   "description": "Generic interfaces for standardized implementation of sensor drivers.",
   "authors":
@@ -15,7 +15,7 @@
     "type": "git",
     "url": "https://github.com/Energesis-Ingenieria/Energesis_Sensor.git"
   },
-  "version": "0.1.4",
+  "version": "0.1.5",
   "license": "Apache-2.0",
   "frameworks": "arduino",
   "platforms": "*",
