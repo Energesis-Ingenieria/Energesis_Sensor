@@ -15,7 +15,7 @@
     "type": "git",
     "url": "https://github.com/Energesis-Ingenieria/Energesis_Sensor.git"
   },
-  "version": "0.1.5",
+  "version": "0.2",
   "license": "Apache-2.0",
   "frameworks": "arduino",
   "platforms": "*",

@@ -3,7 +3,7 @@
  * @author Jose Guerra Carmenate (joseguerracarmenate@gmail.com)
  * @brief Definición de clases genéricas para la implementación de 
  * controladores de sensores.
- * @version 0.1
+ * @version 0.2
  * @date 2022-05-13
  * 
  * @copyright Copyright (c) 2022
@@ -31,6 +31,7 @@ typedef enum{
   SENSOR_TYPE_RELATIVE_HUMIDITY,  //!< Sensor de Humedad relativa
   SENSOR_TYPE_CURRENT,            //!< Sensor de corriente
   SENSOR_TYPE_VOLTAGE,            //!< Sensor de voltaje
+  SENSOR_TYPE_ON_OFF,
   SENSOR_TYPE_MAX,                //!< Cantidad de tipos de sensores
 } sensor_type_t;
 
@@ -50,8 +51,31 @@ struct sensor_sample_t{
     float humidity;       //!< Valor de la humedad relativa en %.
     float current;        //!< Valor de la corriente en mA.
     float voltage;        //!< Valor del voltaje en mV.
-    float valueFloat;     //!< Genérico para variables de tipo float 
+    float valueFloat;     //!< Genérico para variables de tipo float
+    bool valueBool;
   };
+
+  bool operator!=( const sensor_sample_t &b ){
+    if( type != b.type )
+      return true;
+    
+    switch (type)
+    {
+    case SENSOR_TYPE_VOLTAGE:
+    case SENSOR_TYPE_CURRENT:
+    case SENSOR_TYPE_RELATIVE_HUMIDITY:
+    case SENSOR_TYPE_TEMPERATURE:
+      return valueFloat != b.valueFloat;
+      break;
+    
+    case SENSOR_TYPE_ON_OFF:
+      return valueBool != b.valueBool;
+    
+    default:
+      break;
+    }
+  } 
+
 
 } ;
 
@@ -298,6 +322,47 @@ class Energesis_RelativeHumiditySensor{
 
   protected:
     Energesis_Sensor *m_humidity_sensor = NULL;
+
+};
+
+
+/**
+ * @brief Interfaz para sensores de tipo On/Off
+ * 
+ */
+class Energesis_OnOffSensor{
+  public:
+
+    /**
+     * @brief Construct a new Energesis_OnOffSensor object
+     * 
+     * @param _callback Función de callback para uso en caso de necesitar notificación por cambio 
+     * @param _inverted_logic Indica is es necesario negar el resultado de getState
+     * 
+     * @note Si _inverted_logic == false: ON = true, OFF = false
+     * @note Si _inverted_logic == true: ON = false, OFF = true
+     *  
+     */
+    Energesis_OnOffSensor( bool _inverted_logic = false, std::function<void(bool)> *_callback = NULL ): 
+      m_invert_logic(m_invert_logic), m_callback(_callback){}
+
+    ~Energesis_OnOffSensor(){
+      if( m_onoff_sensor )
+        delete m_onoff_sensor;
+    }
+
+    virtual bool getState() = 0;
+
+    inline bool isOn() { return m_invert_logic? !getState(): getState(); }
+
+    inline bool isOff() { return !isOn(); }
+
+    virtual Energesis_Sensor* getOnOffSensor() = 0;
+
+  protected:
+    bool m_invert_logic; ///< Indica si es necesario invertir la salida de getState
+    std::function<void(bool)> *m_callback = NULL;
+    Energesis_Sensor *m_onoff_sensor = NULL;
 
 };
 
