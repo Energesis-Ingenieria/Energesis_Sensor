@@ -2,7 +2,7 @@
  * @file Energesis_Sensor.cpp
  * @author José Guerra Carmenate (joseguerracarmenate@gmail.com)
  * @brief Implementación de la clase Base Energesis_Sensor.
- * @version 0.1
+ * @version 0.3
  * @date 2022-05-18
  * 
  * @copyright Copyright (c) 2022

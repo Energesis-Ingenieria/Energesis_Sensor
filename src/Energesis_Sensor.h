@@ -3,7 +3,7 @@
  * @author Jose Guerra Carmenate (joseguerracarmenate@gmail.com)
  * @brief Definición de clases genéricas para la implementación de 
  * controladores de sensores.
- * @version 0.2
+ * @version 0.3
  * @date 2022-05-13
  * 
  * @copyright Copyright (c) 2022
