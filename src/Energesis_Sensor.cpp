@@ -37,11 +37,30 @@ static const char *sensor_type_temperature  = "Temperatura",
                   *sensor_type_voltaje      = "Voltaje",
                   *sensor_type_invalid      = "Tipo inválido";
 #elif ENERGESIS_LANGUAGE_SET == ENERGESIS_LANGUAGE_EN
-static const char *sensor_type_temperature  = "Temperature",
-                  *sensor_type_humidity     = "Relative humidity",
-                  *sensor_type_current      = "Current",
-                  *sensor_type_voltaje      = "Voltage",
-                  *sensor_type_invalid      = "Invalid type";
+
+const char sensor_type_temperature[] PROGMEM = "Temperature";
+const char sensor_type_humidity[] PROGMEM = "Relative Humidity";
+const char sensor_type_current[] PROGMEM = "Current";
+const char sensor_type_voltage[] PROGMEM = "Voltage";
+const char sensor_type_on_off[] PROGMEM = "On/Off";
+const char sensor_type_noise[] PROGMEM = "Noise";
+const char sensor_type_acceleration[] PROGMEM = "Acceleration";
+const char sensor_type_gyroscope[] PROGMEM = "Gyroscope";
+const char sensor_type_gas[] PROGMEM = "Gas";
+const char sensor_type_invalid[] PROGMEM = "Invalid Type";
+
+// Array of strings in program memory
+const char* const sensorTypeStrings[] PROGMEM = {
+    sensor_type_temperature,
+    sensor_type_humidity,
+    sensor_type_current,
+    sensor_type_voltage,
+    sensor_type_on_off,
+    sensor_type_noise,
+    sensor_type_acceleration,
+    sensor_type_gyroscope,
+    sensor_type_gas,
+};
 #endif
 
 void Energesis_Sensor::printSensorDetails( Stream *output ){
@@ -50,7 +69,7 @@ void Energesis_Sensor::printSensorDetails( Stream *output ){
   
   sensor_details_t sensor;
   getSensorDetails( &sensor );
- 
+
   output->print( "Sensor: " );
   output->println(sensor.name);
 
@@ -76,25 +95,11 @@ void Energesis_Sensor::printSensorDetails( Stream *output ){
 
 
 const char* Energesis_Sensor::sensorTypeToString( sensor_type_t type ){
-  
-  switch (type)
-  {
-    case SENSOR_TYPE_TEMPERATURE: 
-      return sensor_type_temperature; 
-    
-    case SENSOR_TYPE_RELATIVE_HUMIDITY:
-      return sensor_type_humidity;
-    
-    case SENSOR_TYPE_CURRENT:
-      return sensor_type_current;
-    
-    case SENSOR_TYPE_VOLTAGE:
-      return sensor_type_voltaje;
-
-    default:
-      return sensor_type_invalid;
-
-  }
+    if (type >= 0 && type < SENSOR_TYPE_MAX) {
+        return sensorTypeStrings[type];
+    } else {
+        return sensor_type_invalid;
+    }  
 }
 
 

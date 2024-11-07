@@ -26,58 +26,67 @@ namespace Energesis{
  * @brief Definiciones de los distintos tipos de sensores disponibles
  * 
  */
-typedef enum{
-  SENSOR_TYPE_TEMPERATURE,        //!< Sensor de Temperatura
-  SENSOR_TYPE_RELATIVE_HUMIDITY,  //!< Sensor de Humedad relativa
-  SENSOR_TYPE_CURRENT,            //!< Sensor de corriente
-  SENSOR_TYPE_VOLTAGE,            //!< Sensor de voltaje
-  SENSOR_TYPE_ON_OFF,
-  SENSOR_TYPE_MAX,                //!< Cantidad de tipos de sensores
+typedef enum {
+    SENSOR_TYPE_TEMPERATURE,        //!< Sensor de Temperatura
+    SENSOR_TYPE_RELATIVE_HUMIDITY,  //!< Sensor de Humedad relativa
+    SENSOR_TYPE_CURRENT,            //!< Sensor de corriente
+    SENSOR_TYPE_VOLTAGE,            //!< Sensor de voltaje
+    SENSOR_TYPE_ON_OFF,             //!< Sensor de encendido/apagado
+    SENSOR_TYPE_NOISE,              //!< Sensor de ruido
+    SENSOR_TYPE_ACCELERATION,       //!< Sensor de aceleración
+    SENSOR_TYPE_GYROSCOPE,          //!< Sensor de giroscopio
+    SENSOR_TYPE_GAS,                //!< Sensor de gas
+    SENSOR_TYPE_MAX                 //!< Cantidad de tipos de sensores
 } sensor_type_t;
 
 
 /**
  * @brief Estructura para obtener una muestra con toda la 
  * información referente a esta 
- * 
  */
-struct sensor_sample_t{
+struct sensor_sample_t {
   uint64_t sensor_id;     //!< Identificador único del sensor
   sensor_type_t type;     //!< Magnitud sensada
   uint64_t timestamp;     //!< Timestamp del momento en que fue tomada la muestra
 
-  union{
-    float temperature;    //!< Valor de la temperatura en ºC.
-    float humidity;       //!< Valor de la humedad relativa en %.
-    float current;        //!< Valor de la corriente en mA.
-    float voltage;        //!< Valor del voltaje en mV.
-    float valueFloat;     //!< Genérico para variables de tipo float
-    bool valueBool;
+  union {
+    float temperature;     //!< Valor de la temperatura en ºC
+    float humidity;        //!< Valor de la humedad relativa en %
+    float current;         //!< Valor de la corriente en mA
+    float voltage;         //!< Valor del voltaje en mV
+    float acceleration;    //!< Valor de la aceleración en m/s^2
+    float gyroscope;       //!< Valor del giroscopio en grados/s o radianes/s
+    float gas_concentration; //!< Concentración de gas en ppm
+    float valueFloat;      //!< Genérico para variables de tipo float
+    bool valueBool;        //!< Genérico para variables booleanas
   };
 
-  bool operator!=( const sensor_sample_t &b ){
-    if( type != b.type )
-      return true;
-    
-    switch (type)
-    {
-    case SENSOR_TYPE_VOLTAGE:
-    case SENSOR_TYPE_CURRENT:
-    case SENSOR_TYPE_RELATIVE_HUMIDITY:
-    case SENSOR_TYPE_TEMPERATURE:
-      return valueFloat != b.valueFloat;
-      break;
-    
-    case SENSOR_TYPE_ON_OFF:
-      return valueBool != b.valueBool;
-    
-    default:
-      break;
+  // Operador de desigualdad para comparar muestras
+  bool operator!=(const sensor_sample_t &b) const {
+    // Comparar el tipo de sensor
+    if (type != b.type) return true;
+
+    // Comparar el valor en función del tipo de sensor
+    switch (type) {
+      case SENSOR_TYPE_VOLTAGE:
+      case SENSOR_TYPE_CURRENT:
+      case SENSOR_TYPE_RELATIVE_HUMIDITY:
+      case SENSOR_TYPE_TEMPERATURE:
+      case SENSOR_TYPE_ACCELERATION:
+      case SENSOR_TYPE_GYROSCOPE:
+      case SENSOR_TYPE_GAS:
+        return valueFloat != b.valueFloat;
+
+      case SENSOR_TYPE_ON_OFF:
+        return valueBool != b.valueBool;
+
+      default:
+        // Si el tipo de sensor no coincide con ningún caso, se consideran iguales
+        return false;
     }
-  } 
+  }
+};
 
-
-} ;
 
 /**
  * @brief Permite almacenar información detallada de un sensor.
