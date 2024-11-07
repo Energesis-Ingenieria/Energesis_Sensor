@@ -17,8 +17,8 @@
 #include <stdint.h>
 
 #define ENERGESIS_MAJOR_VERSION 0
-#define ENERGESIS_MINOR_VERSION 1
-#define ENERGESIS_PATCH_VERSION 4
+#define ENERGESIS_MINOR_VERSION 3
+#define ENERGESIS_PATCH_VERSION 0
 
 namespace Energesis{
 
