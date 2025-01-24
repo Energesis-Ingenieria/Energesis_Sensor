@@ -131,6 +131,8 @@ namespace Energesis
   public:
     Energesis_Sensor() {};
     virtual ~Energesis_Sensor() {};
+    
+    virtual bool begin() = 0;
 
     /**
      * @brief Permite obtener la muestra más reciente de la magnitud sensada.
